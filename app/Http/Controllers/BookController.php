@@ -17,7 +17,25 @@ class BookController extends Controller
     {
         //native: select * from books;
         //cara laravel :
-        return Book::get();//dipanggil di atas (import) menggunakan use
+        //return Book::get();//dipanggil di atas (import) menggunakan use
+        //atau 
+        //return Book::all();//all tanpa filter kalo get misalnya where apa where id sekian
+        /*$book = Book::all();
+        {
+            if($book){
+                return response(["message" => "Show data success.", "data" => $book],200);
+            }else{
+                return response(["message" => "Data not found.", "data" => null], 404);
+            }
+        }*/
+        $book = Book::get();
+        {
+            if($book && $book -> count() > 0){
+                return response(["message" => "Show data success.", "data" => $book],200);
+            }else{
+                return response(["message" => "Data not found.", "data" => null], 404);
+            }
+        }
     }
 
 
@@ -30,13 +48,15 @@ class BookController extends Controller
     public function store(Request $request)//$request biar bisa dari kiriman user
     {
         //native: insert into blalblabla
-        return Book::create([
+        $book = Book::create([
             "title" => $request->title,
             "description" => $request->description,
             "author" => $request->author,
             "publisher" => $request->publisher,
-            "date_of_issue" => $request->date_of_issue
+            "date_of_issue" => $request->date_of_issue,
         ]);
+
+        return response(["message" => "Create data success.", "data" => $book],201);
 
     }
 
@@ -49,6 +69,14 @@ class BookController extends Controller
     public function show($id)
     {
         //
+        $book = Book::find($id);
+        {
+            if($book && $book -> count() > 0){
+                return response(["message" => "Show data success.", "data" => $book],200);
+            }else{
+                return response(["message" => "Data not found.", "data" => null], 404);
+            }
+        }
     }
 
 
@@ -61,8 +89,22 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $book = Book::find($id);
+        if($book){
+            $book->title = $request->title;
+            $book->description = $request->description;
+            $book->author = $request->author;
+            $book->publisher = $request->publisher;
+            $book->date_of_issue = $request->date_of_issue;
+
+            $book->save();
+
+            //return response([],204);
+            return response(["message" => "Update data success.", "data" => $book],200);
+    }else{
+        return response(["error" => "Update data field.", ], 406);
     }
+}
 
     /**
      * Remove the specified resource from storage.
@@ -72,6 +114,15 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $book = Book::find($id);
+        if($book){
+            $book->delete();
+
+            return response([],204);
+        }else{
+            return response(["error" => "Remove data field."],406);
+        }
+
+        //return Book::destroy($id);
     }
 }
