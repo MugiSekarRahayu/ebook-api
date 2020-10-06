@@ -14,9 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+    Route::post('login', 'UserController@login');
+    Route::post('register', 'UserController@register');
+    Route::post('logout', 'UserController@logout');
+    Route::post('refresh', 'UserController@refresh');
+    Route::get('user-profile', 'UserController@userProfile');
 });
+
 
 /*Route::get('books', 'BookController@index');//show/read all data
 Route::post('books', 'BookController@store');//create new data
@@ -26,3 +36,4 @@ Route::delete('books/{id}', 'BookController@destroy');//delete data*/
 
 Route::resource('books','BookController');
 Route::resource('authors','AuthorController');
+//Route::resource('users', 'UserController');

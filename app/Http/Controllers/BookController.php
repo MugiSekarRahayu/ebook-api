@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Auth;
 use App\Book;
 
 class BookController extends Controller
@@ -37,7 +37,6 @@ class BookController extends Controller
             }
         }
     }
-
 
     /**
      * Store a newly created resource in storage.

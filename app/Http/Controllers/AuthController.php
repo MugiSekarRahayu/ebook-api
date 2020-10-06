@@ -13,8 +13,6 @@ class AuthController extends Controller
             nama : Mugi Sekar Rahayu \n
             gender : Female \n
             phone : 082136571083 \n
-            class : XII RPL 3");
-            
-        
+            class : XII RPL 3"); 
     }
 }
